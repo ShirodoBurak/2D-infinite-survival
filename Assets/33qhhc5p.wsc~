@@ -1,0 +1,60 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class world_generator : MonoBehaviour
+{
+    [System.Serializable]
+    public class noise_settings
+    {
+        public bool Ingore;
+        [Space(10)]
+        [Header("Settings")]
+        public int Seed;
+        public enum noise_type { Surface, Caves }
+        public noise_type noiseType;
+        public int octaves = 1;
+        public double amplitude = 256;
+        public double persistence = 1;
+        public double frequency = 0.023;
+    }
+    public noise_settings[] _settings;
+    public Noise perlinNoise;
+
+    void Update(){
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Debug.Log(_settings[0].amplitude);
+            Debug.Log(_settings[0].persistence);
+            Debug.Log(_settings[0].frequency);
+            Debug.Log(_settings[0].octaves);
+            generateImage();
+        }
+    }
+    void generateImage()
+    {
+        if (_settings.Length > 0)
+        {
+            Texture2D perlin_image = new Texture2D(256, 256);
+            for (int x = 0; x < 256; x++)
+            {
+                for (int y = 0; y < 256; y++)
+                {
+                    float noise2d = 0;
+                    for (int k = 0; k<_settings.Length-1;k++)
+                    {
+                        perlinNoise.octaves = _settings[k].octaves;
+                        perlinNoise.amplitude = _settings[k].amplitude;
+                        perlinNoise.persistence = _settings[k].persistence;
+                        perlinNoise.frequency = _settings[k].frequency;
+                        noise2d += (float) perlinNoise.Get2D(x,y);
+                    }
+                    perlin_image.SetPixel(x, y, new Color(noise2d, noise2d, noise2d));
+                }
+            }
+            Rect rec = new Rect(0, 0, perlin_image.width, perlin_image.height);
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = Sprite.Create(perlin_image, rec, new Vector2(0, 0));
+        }
+    }
+}
+

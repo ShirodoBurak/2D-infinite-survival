@@ -1,0 +1,44 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class world_generator : MonoBehaviour{
+    [System.Serializable]
+    public class noise_settings{
+        public bool Ingore;
+        [Space(10)]
+        [Header("Settings")]
+        public int Seed;
+        public enum noise_type { Surface, Caves }
+        public noise_type noiseType;
+        public int octaves = 1;
+        public float amplitude = 256;
+        public float persistence = 1;
+        public float frequency = 0.023f;
+    }
+    public noise_settings[] _settings;
+    public float multiplier = 1;
+    public Vector2Int offset;
+    void Update(){
+        generateImage();
+    }
+    void generateImage(){   
+        if (_settings.Length > 0){
+            Texture2D perlin_image = new Texture2D(256, 256);
+            for (int x = 0; x < 256; x++){
+                for (int y = 0; y < 256; y++){
+                    /*float noise2d = 0;
+                    for (int k = 0; k<_settings.Length-1;k++){
+                        noise2d += Mathf.PerlinNoise(_settings[k].Seed+x+offset.x,_settings[k].Seed + y + offset.y);
+                        noise2d = Mathf.PerlinNoise(x,y);
+                    }*/
+                    perlin_image.SetPixel(x, y, new Color(Mathf.PerlinNoise(x, y), Mathf.PerlinNoise(x, y), Mathf.PerlinNoise(x, y)));
+                }
+            }
+            perlin_image.Apply();
+            Sprite resultImage = Sprite.Create(perlin_image, new Rect(0.0f, 0.0f, perlin_image.width, perlin_image.height), new Vector2(0.5f, 0.5f), 100f);
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = resultImage;
+        }
+    }
+}
+
