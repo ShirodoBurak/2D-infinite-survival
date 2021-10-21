@@ -347,8 +347,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missingTexture: {fileID: 11400000, guid: e5b8d733600e8544b86c41a49810855e, type: 2}
   grass: {fileID: 11400000, guid: 3e4951ad03fe3f5489c85c8178c1e6aa, type: 2}
-  dirt: {fileID: 11400000, guid: 3adbee3058bf0bd47989a876e8bafd1b, type: 2}
-  stone: {fileID: 11400000, guid: efd2f8c2380946a46ac89414fa96b6d3, type: 2}
+  dirt: {fileID: 11400000, guid: eda6dc1bba5d0b84cb88f4b4c382aac6, type: 2}
+  stone: {fileID: 11400000, guid: fd51d00c882a2ff4b94b9c5ba1273a34, type: 2}
 --- !u!4 &128152324
 Transform:
   m_ObjectHideFlags: 0

@@ -85,8 +85,6 @@ public class world_generator : MonoBehaviour{
                     }
                 } 
             }
-
-
             //Loop through the chunk again to decorate it.
             Decorate();
         }
@@ -127,9 +125,9 @@ public class world_generator : MonoBehaviour{
         }
     }
     //A function that simplifies the tile data checking.
-    Tile getTile(Vector3Int vec)
+    TileBase getTile(Vector3Int vec)
     {
-        return (Tile)tilemap.GetTile(vec);
+        return tilemap.GetTile(vec);
     }
     //A function that simplifies the tile placement.
     void placeTile(int x, int y, TileBase tile)
