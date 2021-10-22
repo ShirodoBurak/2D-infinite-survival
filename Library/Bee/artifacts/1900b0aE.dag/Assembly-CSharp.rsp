@@ -340,8 +340,8 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/VSSettingsProvider.ref.dll"
-"Assets/TileGen/TileGen.cs"
-"Assets/TileGen/TileGenGuide.cs"
+"Assets/camMove.cs"
+"Assets/data_inspector.cs"
 "Assets/TileHolder.cs"
 "Assets/world_generator.cs"
 -langversion:8.0
