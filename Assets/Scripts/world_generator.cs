@@ -154,15 +154,15 @@ public class world_generator : MonoBehaviour {
                             }
                         }
                     }
+                    if(y>noise1d*mul+additionalHeight&&y<noise1d*mul+additionalHeight+1) {
+                        placeTile(x, y, tileholder.grass);
+                    }
                 }
                 //
                 //Not sure what to do with this. Still can't generate grasses :'(
                 //I am stupid : (
                 /*
-                if(y>noise1d*mul+additionalHeight) {
-                    placeTile(x, y, tileholder.grass);
-                    return;
-                }
+                
                 */
                 //
 
