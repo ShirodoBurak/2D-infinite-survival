@@ -381,6 +381,7 @@ MonoBehaviour:
   additionalHeight: 200
   chunk_pos: {x: 0, y: 0}
   light_positions: []
+  loadedChunks: []
   mul: 120
 --- !u!483693784 &1765410879
 TilemapRenderer:
@@ -566,5 +567,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   world: {fileID: 1765410880}
+  Generator: {fileID: 1765410878}
   _outline: {fileID: 1748525453}
   tileholder: {fileID: 1492091457}

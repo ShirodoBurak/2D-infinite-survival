@@ -293,6 +293,7 @@
 -r:"Library/Bee/artifacts/1900b0aP.dag/Unity.VisualScripting.Flow.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aP.dag/Unity.VisualScripting.State.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aP.dag/UnityEngine.UI.ref.dll"
+"Assets/Scripts/data_controller.cs"
 "Assets/Scripts/light_calculator.cs"
 "Assets/Scripts/player_controller.cs"
 "Assets/Scripts/TileHolder.cs"

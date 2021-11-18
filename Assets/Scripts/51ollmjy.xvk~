@@ -1,0 +1,24 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+public class data_controller
+{
+    void Start()
+    {
+        
+    }
+
+    public void saveData(Dictionary<Vector2Int,TileBase> block_positions) {
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Environment.SpecialFolder.MyDocuments +"/MySaveData.dat");
+    }
+    void Update()
+    {
+        
+    }
+}

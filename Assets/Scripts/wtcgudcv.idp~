@@ -1,0 +1,48 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+[Serializable]
+class SaveData {
+    public Dictionary<Vector2Int, TileBase> tile_positions;
+}
+public class data_controller {
+    public void saveData(Dictionary<Vector2Int, TileBase> block_positions, Vector2Int chunk_pos) {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TerrariaCloneSave");
+
+        if(!Directory.Exists(path)) {
+            Directory.CreateDirectory(path);
+        }
+        FileStream file = null;
+
+        if(File.Exists(path+"/"+chunk_pos.x+"-"+chunk_pos.y+".dat")) {
+            File.Delete(path+"/"+chunk_pos.x+"-"+chunk_pos.y+".dat");
+            file=File.Create(path+"/"+chunk_pos.x+"-"+chunk_pos.y+".dat");
+        } else {
+            file=File.Create(path+"/"+chunk_pos.x+"-"+chunk_pos.y+".dat");
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        SaveData data = new SaveData();
+        data.tile_positions=block_positions;
+        bf.Serialize(file, data);
+        file.Close();
+        Debug.Log(chunk_pos.x+"-"+chunk_pos.y);
+    }
+
+    public Dictionary<Vector2Int, TileBase> loadData(Vector2Int chunk_pos) {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TerrariaCloneSave");
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Open(path+"/"+chunk_pos.x+"-"+chunk_pos.y+".dat", FileMode.Open,FileAccess.Read,FileShare.None);
+        SaveData loaded_data = (SaveData)bf.Deserialize(file);
+        return loaded_data.tile_positions;
+    }
+    public bool checkChunkFileExists(Vector2Int chunk_pos) {
+        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TerrariaCloneSave");
+        return File.Exists(path+"/"+chunk_pos.x+"-"+chunk_pos.y+".dat");
+    }
+}

@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 public class player_controller : MonoBehaviour
 {
     public Tilemap world;
+    public world_generator Generator;
     public GameObject _outline;
     public TileHolder tileholder;
     float moveSpeed = 0.3f;
@@ -17,14 +18,26 @@ public class player_controller : MonoBehaviour
     }
     void breakAndPlace() {
         Vector3Int pos = mousePosition();
+        Vector2Int cpos = new Vector2Int(pos.x/16, pos.y/16);
         if(Input.GetMouseButton(1)) {
             if(checkPlacable()[0]&&!checkPlacable()[1]) {
                 world.SetTile(pos, tileholder.dirt);
+                Generator.IsModified.TryGetValue(cpos, out bool check);
+                if(Generator.IsModified.ContainsKey(cpos)&&!check) {
+                    Generator.IsModified.Remove(cpos);
+                    Generator.IsModified.Add(cpos, true);
+                }
             }
         }
         if(Input.GetMouseButton(0)) {
             if(checkPlacable()[1]) {
                 world.SetTile(pos, null);
+                Generator.IsModified.TryGetValue(cpos, out bool check);
+                if(Generator.IsModified.ContainsKey(cpos) && !check) {
+                    Generator.IsModified.Remove(cpos);
+                    Generator.IsModified.Add(cpos, true);
+                }
+                
             }
         }
     }

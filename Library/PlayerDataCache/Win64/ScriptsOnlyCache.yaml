@@ -44,13 +44,13 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 628}
+      Script: {instanceID: 630}
     - Class: 114
-      Script: {instanceID: 2754}
+      Script: {instanceID: 2758}
     - Class: 114
-      Script: {instanceID: 6758}
+      Script: {instanceID: 6764}
     - Class: 114
-      Script: {instanceID: 7726}
+      Script: {instanceID: 7734}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 157
@@ -238,7 +238,7 @@ ScriptsOnlyBuild:
     className: UnityMessageListener
   - hash:
       serializedVersion: 2
-      Hash: d52858f35be31733aba273e2cef42b82
+      Hash: ae8135920de0234fceeb18a1a9cc72a1
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: player_controller
@@ -886,7 +886,7 @@ ScriptsOnlyBuild:
     className: SpriteShape
   - hash:
       serializedVersion: 2
-      Hash: e0b40c2788ad251891232774cf867fa6
+      Hash: bcee1a4abe7b5a7ece45ce7e10dae83d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: world_generator
@@ -1019,4 +1019,4 @@ ScriptsOnlyBuild:
   platform: 19
   scenePathNames:
   - Assets/Scenes/Main.unity
-  playerPath: C:/Users/Mehmet/Desktop/Builds/0.02a/TerrariaClone.exe
+  playerPath: C:/Users/Mehmet/Desktop/Builds/0.03a/TerrariaClone.exe
