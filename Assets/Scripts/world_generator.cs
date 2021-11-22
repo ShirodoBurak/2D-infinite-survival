@@ -145,8 +145,13 @@ public class world_generator : MonoBehaviour {
                         noise2d=noise2d/cave_layer_amount;
                         noise2d=noise2d-subtract2d;
                         //Place the tile onto the tilemap
-                        if(noise2d<0.20f) {
-                            placeTile(x, y, "stone");
+                        if(noise2d<0.245f) {
+                            if((int)(Mathf.PerlinNoise(x*(noise2d*15), y*(noise2d*15))*100) % 2 == 0) {
+                                placeTile(x, y, "stone_2");
+                            } else {
+                                placeTile(x, y, "stone");
+                            }
+                            
                         }
                     }
                 }
@@ -188,12 +193,22 @@ public class world_generator : MonoBehaviour {
                 if(y>noise1d*mul+additionalHeight-(noise1d*256f)) {
                     Vector3Int currentpos = new Vector3Int(x, y, 0);
                     if(tilemap.GetTile(currentpos)!=null) {
-                        placeTile(x, y, "dirt");
-                        block_positions.Add(new Vector2Int(x, y), tileholder.dirt);
+                        if((int)(Mathf.PerlinNoise(x*(noise1d*15), y*(noise1d*15))*100)%2==0) {
+                            placeTile(x, y, "dirt");
+                            block_positions.Add(new Vector2Int(x, y), tileholder.dirt[0]);
+                        } else {
+                            placeTile(x, y, "dirt_2");
+                            block_positions.Add(new Vector2Int(x, y), tileholder.dirt[1]);
+                        }
                     } else {}
                     if(y>noise1d*mul+additionalHeight&&y<noise1d*mul+additionalHeight+1&&tilemap.GetTile(new Vector3Int(x, y-1, 0))!=null) {
-                        placeTile(x, y, "grass");
-                        block_positions.Add(new Vector2Int(x, y), tileholder.grass);
+                        if((int)(Mathf.PerlinNoise(x*(noise1d*15), y*(noise1d*15))*100)%2==0) {
+                            placeTile(x, y, "grass");
+                            block_positions.Add(new Vector2Int(x, y), tileholder.grass[0]);
+                        } else { 
+                            placeTile(x, y, "grass_2");
+                            block_positions.Add(new Vector2Int(x, y), tileholder.grass[1]);
+                        }
                     }
                 } else {
                     foreach(var item in _settings) {
@@ -201,9 +216,17 @@ public class world_generator : MonoBehaviour {
                             float value = Mathf.PerlinNoise(
                                 (offset.x+.5f+x+(Seed*128))*item.size,
                                 (offset.y+.5f+y+(Seed*128))*item.size)*item.Amplifier;
-                            if(value<0.20f&&tilemap.GetTile(new Vector3Int(x, y, 0))!=null&&tilemap.GetTile(new Vector3Int(x, y, 0))==tileholder.stone) {
-                                placeTile(x, y, "iron");
-                                block_positions.Add(new Vector2Int(x, y), tileholder.iron);
+                            if(value<0.20f&&tilemap.GetTile(new Vector3Int(x, y, 0))!=null) {
+                                if(tilemap.GetTile(new Vector3Int(x, y, 0))==tileholder.stone[0] ||tilemap.GetTile(new Vector3Int(x, y, 0))==tileholder.stone[1]) {
+                                    if((int)(Mathf.PerlinNoise(x*(noise1d*15), y*(noise1d*15))*100)%2==0) {
+                                        placeTile(x, y, "iron");
+                                        block_positions.Add(new Vector2Int(x, y), tileholder.iron[0]);
+                                    } else {
+                                        placeTile(x, y, "iron_2");
+                                        block_positions.Add(new Vector2Int(x, y), tileholder.iron[1]);
+                                    }
+                                }
+
                             } 
                         }
                     }

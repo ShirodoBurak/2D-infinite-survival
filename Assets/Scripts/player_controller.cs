@@ -1,43 +1,85 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
-public class player_controller : MonoBehaviour
-{
+public class player_controller : MonoBehaviour {
     public Tilemap world;
     public world_generator Generator;
     public GameObject _outline;
     public TileHolder tileholder;
+    public TileBase selectedTile;
+    public GameObject chat;
+    public GameObject commandline;
+    bool commandLineEnabled = false;
     float moveSpeed = 0.3f;
-    void Update()
-    {
-        moveCamera();
-        outline();
-        breakAndPlace();
+    void Start() {
+        selectedTile=tileholder.Tiles["default:dirt"];
+    }
+    void Update() {
+        commandLineController();
+        if(!commandLineEnabled) {
+            moveCamera();
+            outline();
+            breakAndPlace();
+        }
+    }
+    void commandLineController() {
+        if(Input.GetKeyDown(KeyCode.T)) {
+            commandline.SetActive(true);
+            commandline.GetComponent<InputField>().Select();
+            commandLineEnabled=true;
+        }
+        if(Input.GetKeyDown(KeyCode.Return)&&commandLineEnabled) {
+            commandline.GetComponent<InputField>().Select();
+            commandline.SetActive(false);
+            commandLineEnabled=false;
+            if(commandline.GetComponent<InputField>().text!=null&&commandline.GetComponent<InputField>().text!="") {
+                string[] args = commandline.GetComponent<InputField>().text.Split(' ');
+                if(args[0]=="selectTile"||args[0]=="st") {
+                    if(tileholder.Tiles.ContainsKey(args[1])) {
+                        selectedTile=tileholder.Tiles[args[1]];
+                        chat.GetComponent<Text>().text+="\n"+args[1]+" is selected.";
+                    } else {
+                        chat.GetComponent<Text>().text+="\nTile doesn't exist or you mistyped the tilename. Please use 'tilelist' command to list all existing tiles.";
+                    }
+                } else if(args[0]=="tilelist"||args[0]=="tl") {
+                    string result = "\nTile list :\n";
+                    foreach(var item in tileholder.Tiles) {
+                        result+=item.Key+",";
+                    }
+                    chat.GetComponent<Text>().text+=result;
+                } else if(args[0]=="help") {
+                    chat.GetComponent<Text>().text+="\nExisting commands : \nselecttile,st <tilename> - Changes selected tile\ntilelist,tl - List all existing tile types\nclearchat,cc - Clears all text in chat";
+                } else if(args[0]=="clearchat"||args[0]=="cc") {
+                    chat.GetComponent<Text>().text="";
+                } else {
+                    chat.GetComponent<Text>().text+="\nThis command doesn't exist, try using 'help' command.";
+                }
+            }
+            commandline.GetComponent<InputField>().text="";
+        }
+    }
+    void OnSubmit() {
+
     }
     void breakAndPlace() {
         Vector3Int pos = mousePosition();
         Vector2Int cpos = new Vector2Int(pos.x/16, pos.y/16);
         if(Input.GetMouseButton(1)) {
             if(checkPlacable()[0]&&!checkPlacable()[1]) {
-                world.SetTile(pos, tileholder.dirt);
-                Generator.IsModified.TryGetValue(cpos, out bool check);
-                if(Generator.IsModified.ContainsKey(cpos)&&!check) {
-                    Generator.IsModified.Remove(cpos);
-                    Generator.IsModified.Add(cpos, true);
+                if((cpos.x+cpos.y)%2==0) {
+                    world.SetTile(pos, selectedTile);
+                } else {
+                    world.SetTile(pos, selectedTile);
                 }
             }
         }
         if(Input.GetMouseButton(0)) {
             if(checkPlacable()[1]) {
                 world.SetTile(pos, null);
-                Generator.IsModified.TryGetValue(cpos, out bool check);
-                if(Generator.IsModified.ContainsKey(cpos) && !check) {
-                    Generator.IsModified.Remove(cpos);
-                    Generator.IsModified.Add(cpos, true);
-                }
-                
             }
         }
     }
@@ -46,16 +88,16 @@ public class player_controller : MonoBehaviour
     }
     bool[] checkPlacable() {
         var outline_pos = mousePosition();
-        var right = world.GetTile(new Vector3Int(outline_pos.x+1, outline_pos.y, 0)) != null;
+        var right = world.GetTile(new Vector3Int(outline_pos.x+1, outline_pos.y, 0))!=null;
         var left = world.GetTile(new Vector3Int(outline_pos.x-1, outline_pos.y, 0))!=null;
         var up = world.GetTile(new Vector3Int(outline_pos.x, outline_pos.y+1, 0))!=null;
         var down = world.GetTile(new Vector3Int(outline_pos.x, outline_pos.y-1, 0))!=null;
         bool hasBlockAround = false;
-        if(right || left || up || down) {
+        if(right||left||up||down) {
             hasBlockAround=true;
         }
         bool hasBlockOnPosition = false;
-        if(world.GetTile(new Vector3Int((int)outline_pos.x, (int)outline_pos.y,0)) != null) {
+        if(world.GetTile(new Vector3Int((int)outline_pos.x, (int)outline_pos.y, 0))!=null) {
             hasBlockOnPosition=true;
         }
         return new bool[] { hasBlockAround, hasBlockOnPosition };
